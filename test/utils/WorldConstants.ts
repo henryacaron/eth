@@ -14,6 +14,12 @@ export const initializers = settings.parse(settings.Initializers, {
   SPAWN_RIM_AREA: 7234560000,
 });
 
+export const specialWeaponInitializers = {
+  ...initializers,
+  SPECIAL_WEAPONS: true
+// We're adding the ability to upgrade asteroids!
+}
+
 // This builds a fake HRE-like object used to initialize the test contracts
 export const target4Initializers = settings.parse(settings.Initializers, {
   DISABLE_ZK_CHECKS: true,

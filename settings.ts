@@ -159,6 +159,7 @@ export const Initializers = decoders.guard(
       array6(decoders.number),
       [0, 2000, 10000, 200000, 3000000, 20000000]
     ),
+    SPECIAL_WEAPONS: withDefault(decoders.boolean, false),
   }),
   { style: 'simple' }
 );

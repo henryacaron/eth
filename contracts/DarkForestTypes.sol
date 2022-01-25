@@ -9,6 +9,7 @@ library DarkForestTypes {
     enum PlanetEventType {ARRIVAL}
     enum SpaceType {NEBULA, SPACE, DEEP_SPACE, DEAD_SPACE}
     enum UpgradeBranch {DEFENSE, RANGE, SPEED}
+    enum SpecialType {DeathRay, NULL}
 
     struct Player {
         bool isInitialized;
@@ -17,6 +18,7 @@ library DarkForestTypes {
         uint256 homePlanetId;
         uint256 lastRevealTimestamp;
         uint256 score; // temporary for round 4
+        bool usedSpecial;
     }
 
     struct Planet {
@@ -118,6 +120,7 @@ library DarkForestTypes {
         uint256 SHRINK;
         uint256 DISC_LOWER_BOUND;
         uint256 DISC_UPPER_BOUND;
+        bool SPECIAL_WEAPONS;
     }
 
     struct DFInitArgs {
@@ -157,6 +160,7 @@ library DarkForestTypes {
         uint256 SHRINK;
         uint256 DISC_LOWER_BOUND;
         uint256 DISC_UPPER_BOUND;
+        bool SPECIAL_WEAPONS;
     }
 
     struct DFPInitPlanetArgs {

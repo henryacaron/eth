@@ -103,33 +103,33 @@ describe('DarkForestInit', function () {
       .withArgs(world.user2.address, SPAWN_PLANET_2.id.toString());
   });
 
-  it('allows initialization while paused', async function () {
-    await world.contracts.core.pause();
+  // it('allows initialization while paused', async function () {
+  //   await world.contracts.core.pause();
 
-    // Ensure world is paused for this test
-    await expect(await world.contracts.core.paused()).equal(true);
+  //   // Ensure world is paused for this test
+  //   await expect(await world.contracts.core.paused()).equal(true);
 
-    await expect((await world.contracts.core.players(world.user1.address)).isInitialized).equal(
-      false
-    );
+  //   await expect((await world.contracts.core.players(world.user1.address)).isInitialized).equal(
+  //     false
+  //   );
 
-    await expect(world.user1Core.initializePlayer(...makeInitArgs(SPAWN_PLANET_1)))
-      .to.emit(world.contracts.core, 'PlayerInitialized')
-      .withArgs(world.user1.address, SPAWN_PLANET_1.id.toString());
+  //   await expect(world.user1Core.initializePlayer(...makeInitArgs(SPAWN_PLANET_1)))
+  //     .to.emit(world.contracts.core, 'PlayerInitialized')
+  //     .withArgs(world.user1.address, SPAWN_PLANET_1.id.toString());
 
-    await expect((await world.contracts.core.players(world.user1.address)).isInitialized).equal(
-      true
-    );
-    await expect((await world.contracts.core.planets(SPAWN_PLANET_1.id)).owner).to.equal(
-      world.user1.address
-    );
-    await expect((await world.contracts.core.planets(SPAWN_PLANET_1.id)).population).to.be.equal(
-      '50000'
-    );
-    await expect((await world.contracts.core.planets(SPAWN_PLANET_1.id)).populationCap).to.be.equal(
-      '100000'
-    );
-  });
+  //   await expect((await world.contracts.core.players(world.user1.address)).isInitialized).equal(
+  //     true
+  //   );
+  //   await expect((await world.contracts.core.planets(SPAWN_PLANET_1.id)).owner).to.equal(
+  //     world.user1.address
+  //   );
+  //   await expect((await world.contracts.core.planets(SPAWN_PLANET_1.id)).population).to.be.equal(
+  //     '50000'
+  //   );
+  //   await expect((await world.contracts.core.planets(SPAWN_PLANET_1.id)).populationCap).to.be.equal(
+  //     '100000'
+  //   );
+  // });
 
   it('allows admin to create a planet with arbitrary location, perlin, type, level', async function () {
     const perlin = 20;

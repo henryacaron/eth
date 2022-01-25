@@ -40,6 +40,8 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
     event PlanetUpgraded(address player, uint256 loc, uint256 branch, uint256 toBranchLevel); // emitted in DFPlanet library
     event PlanetHatBought(address player, uint256 loc, uint256 tohatLevel);
     event PlanetTransferred(address sender, uint256 loc, address receiver);
+    event PlanetHijacked(address hijacker, uint256 loc);
+
     event LocationRevealed(address revealer, uint256 loc, uint256 x, uint256 y);
 
     event PlanetProspected(address player, uint256 loc);
@@ -112,7 +114,8 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
             ROUND_END: initArgs.ROUND_END,
             MIN_RADIUS: initArgs.MIN_RADIUS,
             DISC_LOWER_BOUND: initArgs.DISC_LOWER_BOUND,
-            DISC_UPPER_BOUND: initArgs.DISC_UPPER_BOUND
+            DISC_UPPER_BOUND: initArgs.DISC_UPPER_BOUND,
+            SPECIAL_WEAPONS: initArgs.SPECIAL_WEAPONS
         });
 
         s.worldRadius = initArgs.INITIAL_WORLD_RADIUS; // will be overridden by TARGET4_RADIUS if !WORLD_RADIUS_LOCKED
@@ -194,15 +197,15 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
     //     s.adminAddress = _newAdmin;
     // }
 
-    function pause() public onlyAdmin {
-        require(!s.paused, "Game is already paused");
-        s.paused = true;
-    }
+    // function pause() public onlyAdmin {
+    //     require(!s.paused, "Game is already paused");
+    //     s.paused = true;
+    // }
 
-    function unpause() public onlyAdmin {
-        require(s.paused, "Game is already unpaused");
-        s.paused = false;
-    }
+    // function unpause() public onlyAdmin {
+    //     require(s.paused, "Game is already unpaused");
+    //     s.paused = false;
+    // }
 
     function setOwner(uint256 planetId, address newOwner) public onlyAdmin {
         s.planets[planetId].owner = newOwner;
@@ -355,7 +358,8 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
             block.timestamp,
             _location,
             0,
-            0
+            0,
+            false
         );
 
         // Initialize planet information
@@ -433,6 +437,51 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
         _updateWorldRadius();
         emit ArrivalQueued(msg.sender, s.planetEventsCount, oldLoc, newLoc, movedArtifactId);
         return (s.planetEventsCount);
+    }
+
+    function useSpecial(uint256 _location, uint8 _specialId) 
+        public
+        notPaused
+    {
+        require(!s.players[msg.sender].usedSpecial, "player already used special");
+        // refreshPlanet(_location);
+        require(_specialId < 1);
+        // require that the planet is initialized (?)
+        
+        if(_specialId == 0){
+            useHijack(_location);
+        }
+        // if(specialId == 0) useDeathRay(locationId);
+        // else if(specialId == 1) useTakeOver(locationId);
+        s.players[msg.sender].usedSpecial = true;
+    }
+
+	// modified transferOwnership that doesnt require msg.sender to be the owner
+
+    function useHijack(uint256 _location) private {
+        address owner = s.planets[_location].owner;
+	    //require planet is initialized
+        require(
+            s.planetsExtendedInfo[_location].isInitialized == true,
+            "Planet is not initialized"
+        );
+
+        //refresh planet
+        refreshPlanet(_location);
+
+        // require planet owner is not msg.sender
+        require(owner != msg.sender, "Cannot transfer your own planet");
+        // require player = msg.sender
+ 
+        // require planet is not destroyed
+        require(!s.planetsExtendedInfo[_location].destroyed, "can't transfer a destroyed planet");
+
+        // set planet owner to player
+        s.planets[_location].owner = msg.sender;
+
+        // emit takeover message
+        emit PlanetHijacked(msg.sender, _location);
+
     }
 
     function upgradePlanet(uint256 _location, uint256 _branch)
