@@ -9,6 +9,7 @@ library DarkForestTypes {
     enum PlanetEventType {ARRIVAL}
     enum SpaceType {NEBULA, SPACE, DEEP_SPACE, DEAD_SPACE}
     enum UpgradeBranch {DEFENSE, RANGE, SPEED}
+    enum SpecialType {DeathRay, NULL}
 
     struct Player {
         bool isInitialized;
@@ -17,6 +18,7 @@ library DarkForestTypes {
         uint256 homePlanetId;
         uint256 lastRevealTimestamp;
         uint256 score; // temporary for round 4
+        bool usedSpecial;
     }
 
     struct Planet {
@@ -95,6 +97,8 @@ library DarkForestTypes {
     // Game config
     // This struct is ~1 properties from maximum struct size
     struct GameConstants {
+        uint256 DESTROY_THRESHOLD;
+        uint256 INITIAL_WORLD_RADIUS;
         uint256 MAX_NATURAL_PLANET_LEVEL;
         uint256 TIME_FACTOR_HUNDREDTHS; // speedup/slowdown game
         uint256 PERLIN_THRESHOLD_1;
@@ -110,6 +114,13 @@ library DarkForestTypes {
         uint256 LOCATION_REVEAL_COOLDOWN;
         uint8[5][10][4] PLANET_TYPE_WEIGHTS; // spaceType (enum 0-3) -> planetLevel (0-7) -> planetType (enum 0-4)
         uint256[6] ARTIFACT_POINT_VALUES;
+        uint256 SHRINK_START;
+        uint256 ROUND_END;
+        uint256 MIN_RADIUS;
+        uint256 SHRINK;
+        uint256 DISC_LOWER_BOUND;
+        uint256 DISC_UPPER_BOUND;
+        bool SPECIAL_WEAPONS;
     }
 
     struct DFInitArgs {
@@ -128,6 +139,7 @@ library DarkForestTypes {
         bool PERLIN_MIRROR_Y;
         uint256 PERLIN_LENGTH_SCALE; // must be a power of two up to 8192
         // Game config
+        uint256 DESTROY_THRESHOLD;
         uint256 MAX_NATURAL_PLANET_LEVEL;
         uint256 TIME_FACTOR_HUNDREDTHS; // speedup/slowdown game
         uint256 PERLIN_THRESHOLD_1;
@@ -142,6 +154,13 @@ library DarkForestTypes {
         uint8[5][10][4] PLANET_TYPE_WEIGHTS; // spaceType (enum 0-3) -> planetLevel (0-7) -> planetType (enum 0-4)
         uint256[6] ARTIFACT_POINT_VALUES;
         uint256 PHOTOID_ACTIVATION_DELAY;
+        uint256 SHRINK_START;
+        uint256 ROUND_END;
+        uint256 MIN_RADIUS;
+        uint256 SHRINK;
+        uint256 DISC_LOWER_BOUND;
+        uint256 DISC_UPPER_BOUND;
+        bool SPECIAL_WEAPONS;
     }
 
     struct DFPInitPlanetArgs {
@@ -179,6 +198,12 @@ library DarkForestTypes {
         uint256 travelTime;
         uint256 movedArtifactId;
         ArrivalType arrivalType;
+    }
+
+    struct ApplyArrivalData {
+        uint256 newArtifactId;
+        Planet planet;
+        bool destroyed;
     }
 
     struct DFTCreateArtifactArgs {

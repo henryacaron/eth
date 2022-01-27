@@ -9,6 +9,7 @@ import type {
   DarkForestCoreReturn,
   DarkForestGetters,
   DarkForestPlanet,
+  DarkForestSpecialWeapons,
   DarkForestTokens,
   DarkForestUtils,
   LibraryContracts,
@@ -110,6 +111,14 @@ async function deployLibraries({}, hre: HardhatRuntimeEnvironment): Promise<Libr
   const planet = await PlanetFactory.deploy();
   await planet.deployTransaction.wait();
 
+  const SpecialWeaponsFactory = await hre.ethers.getContractFactory('DarkForestSpecialWeapons', {
+    libraries: {
+      DarkForestPlanet : planet.address
+    }
+  });
+  const specials = await SpecialWeaponsFactory.deploy();
+  await specials.deployTransaction.wait();
+
   const InitializeFactory = await hre.ethers.getContractFactory('DarkForestInitialize');
   const initialize = await InitializeFactory.deploy();
   await initialize.deployTransaction.wait();
@@ -125,6 +134,7 @@ async function deployLibraries({}, hre: HardhatRuntimeEnvironment): Promise<Libr
     initialize,
     verifier: verifier as Verifier,
     artifactUtils: artifactUtils as DarkForestArtifactUtils,
+    specials: specials as DarkForestSpecialWeapons
   };
 }
 
@@ -134,6 +144,7 @@ subtask('deploy:core', 'deploy and return tokens contract')
   .addParam('tokensAddress', '', undefined, types.string)
   .addParam('initializeAddress', '', undefined, types.string)
   .addParam('planetAddress', '', undefined, types.string)
+  .addParam('specialsAddress', '', undefined, types.string)
   .addParam('utilsAddress', '', undefined, types.string)
   .addParam('verifierAddress', '', undefined, types.string)
   .addParam('artifactUtilsAddress', '', undefined, types.string)
@@ -146,6 +157,7 @@ async function deployCore(
     tokensAddress: string;
     initializeAddress: string;
     planetAddress: string;
+    specialsAddress: string;
     utilsAddress: string;
     verifierAddress: string;
     artifactUtilsAddress: string;
@@ -158,6 +170,7 @@ async function deployCore(
       libraries: {
         DarkForestInitialize: args.initializeAddress,
         DarkForestPlanet: args.planetAddress,
+        DarkForestSpecialWeapons: args.specialsAddress,
         DarkForestUtils: args.utilsAddress,
         Verifier: args.verifierAddress,
         DarkForestArtifactUtils: args.artifactUtilsAddress,

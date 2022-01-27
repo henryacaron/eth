@@ -5,6 +5,7 @@ import {
   DarkForestPlanet,
   DarkForestTokens,
   DarkForestUtils,
+  DarkForestSpecialWeapons,
   Verifier,
   Whitelist,
 } from '@darkforest_eth/contracts/typechain';
@@ -19,6 +20,7 @@ export interface TestContracts {
   planet: DarkForestPlanet;
   core: DarkForestCore;
   getters: DarkForestGetters;
+  specials: DarkForestSpecialWeapons
 }
 
 export interface InitializeContractArgs {
@@ -80,6 +82,13 @@ export async function initializeContracts({
   const DarkForestInitializeContract = await ethers.getContractFactory('DarkForestInitialize');
   const darkForestInitialize = await DarkForestInitializeContract.deploy();
 
+  const DarkForestSpecialWeaponsContract = await ethers.getContractFactory('DarkForestSpecialWeapons' ,{
+      libraries: {
+        DarkForestPlanet : darkForestPlanet.address
+      }
+  });
+  const darkForestSpecialWeapons = await DarkForestSpecialWeaponsContract.deploy();
+
   const DarkForestCoreContract = await ethers.getContractFactory('DarkForestCore', {
     libraries: {
       DarkForestInitialize: darkForestInitialize.address,
@@ -87,6 +96,7 @@ export async function initializeContracts({
       DarkForestUtils: darkForestUtils.address,
       Verifier: verifier.address,
       DarkForestArtifactUtils: artifactUtils.address,
+      DarkForestSpecialWeapons: darkForestSpecialWeapons.address
     },
   });
 
@@ -123,5 +133,6 @@ export async function initializeContracts({
     planet: darkForestPlanet,
     core: darkForestCore,
     getters: darkForestGetters,
+    specials: darkForestSpecialWeapons
   };
 }

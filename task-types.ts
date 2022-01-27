@@ -4,6 +4,7 @@ import type {
   DarkForestCore,
   DarkForestGetters,
   DarkForestPlanet,
+  DarkForestSpecialWeapons,
   DarkForestTokens,
   DarkForestUtils,
   Verifier,
@@ -16,6 +17,7 @@ export {
   DarkForestTokens,
   DarkForestGetters,
   DarkForestPlanet,
+  DarkForestSpecialWeapons,
   DarkForestUtils,
   DarkForestArtifactUtils,
   Verifier,
@@ -26,6 +28,7 @@ export interface LibraryContracts {
   lazyUpdate: Contract;
   utils: DarkForestUtils;
   planet: DarkForestPlanet;
+  specials: DarkForestSpecialWeapons,
   initialize: Contract;
   verifier: Verifier;
   artifactUtils: DarkForestArtifactUtils;

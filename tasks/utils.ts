@@ -21,6 +21,7 @@ async function getCore({}, hre: HardhatRuntimeEnvironment): Promise<DarkForestCo
     CORE_CONTRACT_ADDRESS,
     INITIALIZE_LIBRARY_ADDRESS,
     PLANET_LIBRARY_ADDRESS,
+    SPECIALS_LIBRARY_ADDRESS,
     UTILS_LIBRARY_ADDRESS,
     VERIFIER_LIBRARY_ADDRESS,
     ARTIFACT_UTILS_LIBRARY_ADDRESS,
@@ -31,6 +32,7 @@ async function getCore({}, hre: HardhatRuntimeEnvironment): Promise<DarkForestCo
     libraries: {
       DarkForestInitialize: INITIALIZE_LIBRARY_ADDRESS,
       DarkForestPlanet: PLANET_LIBRARY_ADDRESS,
+      DarkForestSpecialWeapons: SPECIALS_LIBRARY_ADDRESS,
       DarkForestUtils: UTILS_LIBRARY_ADDRESS,
       Verifier: VERIFIER_LIBRARY_ADDRESS,
       DarkForestArtifactUtils: ARTIFACT_UTILS_LIBRARY_ADDRESS,

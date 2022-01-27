@@ -84,6 +84,7 @@ async function upgradeMulti({}, hre: HardhatRuntimeEnvironment) {
       libraries: {
         DarkForestInitialize: libraries.initialize.address,
         DarkForestPlanet: libraries.planet.address,
+        DarkForestSpecialWeapons: libraries.specials.address,
         DarkForestUtils: libraries.utils.address,
         Verifier: libraries.verifier.address,
         DarkForestArtifactUtils: libraries.artifactUtils.address,
@@ -111,6 +112,7 @@ async function upgradeCore({}, hre: HardhatRuntimeEnvironment) {
     CORE_CONTRACT_ADDRESS,
     UTILS_LIBRARY_ADDRESS,
     PLANET_LIBRARY_ADDRESS,
+    SPECIALS_LIBRARY_ADDRESS,
     INITIALIZE_LIBRARY_ADDRESS,
     VERIFIER_LIBRARY_ADDRESS,
     ARTIFACT_UTILS_LIBRARY_ADDRESS,
@@ -123,6 +125,7 @@ async function upgradeCore({}, hre: HardhatRuntimeEnvironment) {
       libraries: {
         DarkForestInitialize: INITIALIZE_LIBRARY_ADDRESS,
         DarkForestPlanet: PLANET_LIBRARY_ADDRESS,
+        DarkForestSpecialWeapons: SPECIALS_LIBRARY_ADDRESS,
         DarkForestArtifactUtils: ARTIFACT_UTILS_LIBRARY_ADDRESS,
         DarkForestUtils: UTILS_LIBRARY_ADDRESS,
         Verifier: VERIFIER_LIBRARY_ADDRESS,

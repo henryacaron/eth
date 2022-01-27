@@ -39,6 +39,7 @@ export const Contracts = decoders.guard(
      */
     UTILS_LIBRARY_ADDRESS: decoders.string,
     PLANET_LIBRARY_ADDRESS: decoders.string,
+    SPECIALS_LIBRARY_ADDRESS: decoders.string,
     ARTIFACT_UTILS_LIBRARY_ADDRESS: decoders.string,
     VERIFIER_LIBRARY_ADDRESS: decoders.string,
     INITIALIZE_LIBRARY_ADDRESS: decoders.string,
@@ -81,6 +82,13 @@ export const Initializers = decoders.guard(
     /**
      * Game configuration
      */
+    SHRINK: withDefault(decoders.number, 0),
+    SHRINK_START: withDefault(dateInSeconds, Math.floor(Date.now() / 1000)), // Current time in seconds
+    ROUND_END: withDefault(dateInSeconds, Math.floor(Date.now() / 1000) + 6000), // 100 minute round is default
+    MIN_RADIUS: withDefault(decoders.number, 500),
+    DISC_LOWER_BOUND: withDefault(decoders.number, 50),
+    DISC_UPPER_BOUND: withDefault(decoders.number, 75), 
+    DESTROY_THRESHOLD: withDefault(decoders.number, 0),
     MAX_NATURAL_PLANET_LEVEL: withDefault(decoders.number, 256),
     TIME_FACTOR_HUNDREDTHS: withDefault(decoders.number, 100),
     PERLIN_THRESHOLD_1: withDefault(decoders.number, 13),
@@ -152,6 +160,7 @@ export const Initializers = decoders.guard(
       array6(decoders.number),
       [0, 2000, 10000, 200000, 3000000, 20000000]
     ),
+    SPECIAL_WEAPONS: withDefault(decoders.boolean, false),
   }),
   { style: 'simple' }
 );
