@@ -39,6 +39,7 @@ export const Contracts = decoders.guard(
      */
     UTILS_LIBRARY_ADDRESS: decoders.string,
     PLANET_LIBRARY_ADDRESS: decoders.string,
+    SPECIALS_LIBRARY_ADDRESS: decoders.string,
     ARTIFACT_UTILS_LIBRARY_ADDRESS: decoders.string,
     VERIFIER_LIBRARY_ADDRESS: decoders.string,
     INITIALIZE_LIBRARY_ADDRESS: decoders.string,

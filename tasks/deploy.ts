@@ -79,6 +79,7 @@ async function deploy(
     tokensAddress,
     initializeAddress: libraries.initialize.address,
     planetAddress: libraries.planet.address,
+    specialsAddress : libraries.specials.address,
     utilsAddress: libraries.utils.address,
     verifierAddress: libraries.verifier.address,
     artifactUtilsAddress: libraries.artifactUtils.address,
@@ -215,6 +216,12 @@ async function deploySave(
    * The address for the DarkForestPlanet library.
    */
   export const PLANET_LIBRARY_ADDRESS = '${args.libraries.planet.address}';
+
+  /**
+   * The address for the DarkForestSpecialWeapons library.
+   */
+  export const SPECIALS_LIBRARY_ADDRESS = '${args.libraries.specials.address}';
+
   /**
    * The address for the DarkForestArtifactUtils library.
    */

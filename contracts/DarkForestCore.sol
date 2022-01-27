@@ -9,6 +9,7 @@ import "./DarkForestUtils.sol";
 import "./DarkForestPlanet.sol";
 import "./DarkForestInitialize.sol";
 import "./DarkForestArtifactUtils.sol";
+import "./DarkForestSpecialWeapons.sol";
 
 // .______       _______     ___       _______  .___  ___.  _______
 // |   _  \     |   ____|   /   \     |       \ |   \/   | |   ____|
@@ -290,6 +291,10 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
         return DarkForestPlanet.getRefreshedPlanet(location, timestamp);
     }
 
+    function useSpecial(uint256 _location, uint8 _specialId) public {
+        DarkForestSpecialWeapons.useSpecial(_location, _specialId);
+    }
+
     function checkRevealProof(
         uint256[2] memory _a,
         uint256[2][2] memory _b,
@@ -439,50 +444,6 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
         return (s.planetEventsCount);
     }
 
-    function useSpecial(uint256 _location, uint8 _specialId) 
-        public
-        notPaused
-    {
-        require(!s.players[msg.sender].usedSpecial, "player already used special");
-        // refreshPlanet(_location);
-        require(_specialId < 1);
-        // require that the planet is initialized (?)
-        
-        if(_specialId == 0){
-            useHijack(_location);
-        }
-        // if(specialId == 0) useDeathRay(locationId);
-        // else if(specialId == 1) useTakeOver(locationId);
-        s.players[msg.sender].usedSpecial = true;
-    }
-
-	// modified transferOwnership that doesnt require msg.sender to be the owner
-
-    function useHijack(uint256 _location) private {
-        address owner = s.planets[_location].owner;
-	    //require planet is initialized
-        require(
-            s.planetsExtendedInfo[_location].isInitialized == true,
-            "Planet is not initialized"
-        );
-
-        //refresh planet
-        refreshPlanet(_location);
-
-        // require planet owner is not msg.sender
-        require(owner != msg.sender, "Cannot transfer your own planet");
-        // require player = msg.sender
- 
-        // require planet is not destroyed
-        require(!s.planetsExtendedInfo[_location].destroyed, "can't transfer a destroyed planet");
-
-        // set planet owner to player
-        s.planets[_location].owner = msg.sender;
-
-        // emit takeover message
-        emit PlanetHijacked(msg.sender, _location);
-
-    }
 
     function upgradePlanet(uint256 _location, uint256 _branch)
         public

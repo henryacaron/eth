@@ -115,17 +115,17 @@ describe('DarkForestSpecialWeapons', function () {
     expect(gameConstants.SPECIAL_WEAPONS).to.eql(expected);
   });
 
-  it('takeover should emit PlanetHijacked', async function() {
+  it('hijack should emit PlanetTransferred', async function() {
     await increaseBlockchainTime();
     const planet2Id = SPAWN_PLANET_2.id;
 
     await expect(
       world.user1Core.useSpecial(planet2Id, 0))
-      .to.emit(world.user1Core, "PlanetHijacked")
-      .withArgs(world.user1.address, SPAWN_PLANET_2.id);
+      .to.emit(world.user1Core, "PlanetTransferred")
+      .withArgs(world.user2.address, SPAWN_PLANET_2.id,world.user1.address);
   })
 
-  it.only('takeover should change planet owner', async function() {
+  it('hijack should change planet owner', async function() {
     await increaseBlockchainTime();
     const planet2Id = SPAWN_PLANET_2.id;
 
@@ -138,10 +138,55 @@ describe('DarkForestSpecialWeapons', function () {
     // expect(world.user1.usedSpecial)
   });
 
-  it.only("cannot hijack your own planet", async function () {
+  it("cannot hijack your own planet", async function () {
     const planet1Id = SPAWN_PLANET_1.id;
 
     await expect(world.user1Core.useSpecial(planet1Id, 0))
       .to.be.revertedWith("Cannot transfer your own planet")
   })
+
+  it('takeover should change planet owner', async function() {
+    await increaseBlockchainTime();
+    const planet2Id = SPAWN_PLANET_2.id;
+
+    // expect(planet2.owner).to.equal(world.user2.address);
+    await world.user1Core.useSpecial(planet2Id, 0);
+    await world.contracts.core.refreshPlanet(planet2Id);
+    const planet2 = await world.contracts.core.planets(planet2Id);
+
+    expect(planet2.owner).to.equal(world.user1.address);
+    // expect(world.user1.usedSpecial)
+  });
+
+  it("destroy emits PlanetDestroyed", async function () {
+    const planet1Id = SPAWN_PLANET_1.id;
+    const planet2Id = SPAWN_PLANET_2.id;
+    
+    await expect(
+      world.user1Core.useSpecial(planet2Id, 1))
+      .to.emit(world.user1Core, "PlanetDestroyed")
+      .withArgs(world.user2.address, SPAWN_PLANET_2.id);
+  })
+
+  it("cannot destroy twice", async function () {
+    const planet1Id = SPAWN_PLANET_1.id;
+    const planet2Id = SPAWN_PLANET_2.id;
+
+    await world.user1Core.useSpecial(planet2Id, 1);
+
+    await expect(world.user1Core.useSpecial(planet1Id, 1))
+      .to.be.revertedWith("player already used special")
+  })
+
+  it.only('cannot destroy a destroyed planet', async function() {
+    await increaseBlockchainTime();
+    const planet1Id = SPAWN_PLANET_1.id;
+    const planet2Id = SPAWN_PLANET_2.id;
+
+    // expect(planet2.owner).to.equal(world.user2.address);
+    await world.user1Core.useSpecial(planet2Id, 1);
+    await expect(world.user2Core.useSpecial(planet2Id, 1))
+    .to.be.revertedWith("planet already destroyed")
+    // expect(world.user1.usedSpecial)
+  });
 });

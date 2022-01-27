@@ -17,7 +17,7 @@ export const initializers = settings.parse(settings.Initializers, {
 export const specialWeaponInitializers = {
   ...initializers,
   SPECIAL_WEAPONS: true
-// We're adding the ability to upgrade asteroids!
+// We're adding special weapons!
 }
 
 // This builds a fake HRE-like object used to initialize the test contracts
