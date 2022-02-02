@@ -291,7 +291,13 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
         return DarkForestPlanet.getRefreshedPlanet(location, timestamp);
     }
 
+    function getPlayerStockpile(address player) public view returns (uint256)
+    {
+        return s.players[player].stockpile;
+    }
+
     function useSpecial(uint256 _location, uint8 _specialId) public {
+        require(s.gameConstants.SPECIAL_WEAPONS, "special weapons not allowed");
         DarkForestSpecialWeapons.useSpecial(_location, _specialId);
     }
 
@@ -362,6 +368,7 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
             msg.sender,
             block.timestamp,
             _location,
+            0,
             0,
             0,
             false
@@ -444,6 +451,15 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
         return (s.planetEventsCount);
     }
 
+    function sendToStockpile(uint256 _location, uint256 _amount)
+        public
+        notPaused
+        returns (uint256, uint256)
+    {
+        refreshPlanet(_location);
+        DarkForestPlanet.sendToStockpile(_location, _amount);
+        return (_location, _amount);
+    }
 
     function upgradePlanet(uint256 _location, uint256 _branch)
         public

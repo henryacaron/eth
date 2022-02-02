@@ -9,7 +9,6 @@ library DarkForestTypes {
     enum PlanetEventType {ARRIVAL}
     enum SpaceType {NEBULA, SPACE, DEEP_SPACE, DEAD_SPACE}
     enum UpgradeBranch {DEFENSE, RANGE, SPEED}
-    enum SpecialType {DeathRay, NULL}
 
     struct Player {
         bool isInitialized;
@@ -18,6 +17,7 @@ library DarkForestTypes {
         uint256 homePlanetId;
         uint256 lastRevealTimestamp;
         uint256 score; // temporary for round 4
+        uint256 stockpile;
         bool usedSpecial;
     }
 

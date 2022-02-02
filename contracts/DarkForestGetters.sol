@@ -358,4 +358,8 @@ contract DarkForestGetters is Initializable {
             });
         }
     }
+
+    function getPlayerStockpile(address playerId) public view returns (uint256) {
+        return coreContract.getPlayerStockpile(playerId);
+    }
 }

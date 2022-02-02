@@ -307,3 +307,8 @@ export async function getArtifactsOwnedBy(getters: DarkForestGetters, addr: stri
     (artifactWithMetadata) => artifactWithMetadata[0]
   );
 }
+
+export async function getPlayerStockpile(getters: DarkForestGetters, addr: string) {
+  const stockpile = await getters.getPlayerStockpile(addr);
+  return stockpile;
+}
