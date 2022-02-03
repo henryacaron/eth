@@ -27,8 +27,6 @@ library DarkForestPlanet {
     event ArtifactDeactivated(address player, uint256 artifactId, uint256 loc);
     event PlanetUpgraded(address player, uint256 loc, uint256 branch, uint256 toBranchLevel);
     event PlanetDestroyed(address player, uint256 loc);
-    event sentToStockpile(uint256 _location, uint256 _amount);
-
 
     function isPopCapBoost(uint256 _location) public pure returns (bool) {
         bytes memory _b = abi.encodePacked(_location);
@@ -313,20 +311,26 @@ library DarkForestPlanet {
             _planet.population = 50000;
         }
     }
-    /*
+ /*
     To do: move this into core or into its own file
     */
-    function sendToStockpile(uint256 _location, uint256 _amount) public {
-        DarkForestTypes.Planet storage planet = s().planets[_location];
-        DarkForestTypes.PlanetExtendedInfo storage info = s().planetsExtendedInfo[_location];
-        DarkForestTypes.Player storage player = s().players[msg.sender];
-        require(planet.owner == msg.sender, "Only owner account can perform operation on planets");
-        require(planet.silver >= _amount, "Insufficient silver to transfer");
+    function sendToStockpile(uint256 locationId, uint256 silverToWithdraw) public {
+        DarkForestTypes.Planet storage planet = s().planets[locationId];
+        DarkForestTypes.PlanetExtendedInfo storage info = s().planetsExtendedInfo[locationId];
+        require(planet.owner == msg.sender, "you must own this planet");
+       
         require(!info.destroyed, "planet is destroyed");
+        require(
+            planet.silver >= silverToWithdraw,
+            "tried to withdraw more silver than exists on planet"
+        );
 
-        player.stockpile += _amount;
-        planet.silver -= _amount;
-        emit sentToStockpile(_location, _amount);
+        planet.silver -= silverToWithdraw;
+
+        // Energy and Silver are not stored as floats in the smart contracts,
+        // so any of those values coming from the contracts need to be divided by
+        // `CONTRACT_PRECISION` to get their true integer value.
+        s().players[msg.sender].stockpile += silverToWithdraw / 1000;
     }
 
     function upgradePlanet(uint256 _location, uint256 _branch) public {

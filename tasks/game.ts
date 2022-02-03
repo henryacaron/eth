@@ -36,122 +36,122 @@ import { DarkForestCore } from '../task-types';
 //   await unpauseReceipt.wait();
 // }
 
-task('game:setRadius', 'change the radius')
-  .addPositionalParam('radius', 'the radius', undefined, types.int)
-  .setAction(gameSetRadius);
+// task('game:setRadius', 'change the radius')
+//   .addPositionalParam('radius', 'the radius', undefined, types.int)
+//   .setAction(gameSetRadius);
 
-async function gameSetRadius(args: { radius: number }, hre: HardhatRuntimeEnvironment) {
-  await hre.run('utils:assertChainId');
+// async function gameSetRadius(args: { radius: number }, hre: HardhatRuntimeEnvironment) {
+//   await hre.run('utils:assertChainId');
 
-  const darkForest: DarkForestCore = await hre.run('utils:getCore');
+//   const darkForest: DarkForestCore = await hre.run('utils:getCore');
 
-  const setRadiusReceipt = await darkForest.adminSetWorldRadius(args.radius);
-  await setRadiusReceipt.wait();
-}
+//   const setRadiusReceipt = await darkForest.adminSetWorldRadius(args.radius);
+//   await setRadiusReceipt.wait();
+// }
 
-task('game:setShrinkStart', 'change the shrink start')
-  .addPositionalParam('timestamp', 'the timestamp', undefined, types.int)
-  .setAction(setShrinkStart);
+// task('game:setShrinkStart', 'change the shrink start')
+//   .addPositionalParam('timestamp', 'the timestamp', undefined, types.int)
+//   .setAction(setShrinkStart);
 
-async function setShrinkStart(args: { timestamp: number }, hre: HardhatRuntimeEnvironment) {
-  await hre.run('utils:assertChainId');
+// async function setShrinkStart(args: { timestamp: number }, hre: HardhatRuntimeEnvironment) {
+//   await hre.run('utils:assertChainId');
 
-  const darkForest: DarkForestCore = await hre.run('utils:getCore');
+//   const darkForest: DarkForestCore = await hre.run('utils:getCore');
 
-  const setShrinkReceipt = await darkForest.setShrinkStart(BigNumber.from(args.timestamp));
-  await setShrinkReceipt.wait();
-  const newShrink = (await darkForest.gameConstants()).SHRINK_START;
-  console.log("new shrink", newShrink.toNumber())
-}
+//   const setShrinkReceipt = await darkForest.setShrinkStart(BigNumber.from(args.timestamp));
+//   await setShrinkReceipt.wait();
+//   const newShrink = (await darkForest.gameConstants()).SHRINK_START;
+//   console.log("new shrink", newShrink.toNumber())
+// }
 
-task('game:setRoundEnd', 'change the round end')
-  .addPositionalParam('timestamp', 'the timestamp', undefined, types.int)
-  .setAction(setRoundEnd);
+// task('game:setRoundEnd', 'change the round end')
+//   .addPositionalParam('timestamp', 'the timestamp', undefined, types.int)
+//   .setAction(setRoundEnd);
 
-async function setRoundEnd(args: { timestamp: number }, hre: HardhatRuntimeEnvironment) {
-  await hre.run('utils:assertChainId');
+// async function setRoundEnd(args: { timestamp: number }, hre: HardhatRuntimeEnvironment) {
+//   await hre.run('utils:assertChainId');
 
-  const darkForest: DarkForestCore = await hre.run('utils:getCore');
+//   const darkForest: DarkForestCore = await hre.run('utils:getCore');
 
-  const setShrinkReceipt = await darkForest.setRoundEnd(BigNumber.from(args.timestamp));
-  await setShrinkReceipt.wait();
-  const newEnd = (await darkForest.gameConstants()).ROUND_END;
-  console.log("new end", newEnd.toNumber());
-}
+//   const setShrinkReceipt = await darkForest.setRoundEnd(BigNumber.from(args.timestamp));
+//   await setShrinkReceipt.wait();
+//   const newEnd = (await darkForest.gameConstants()).ROUND_END;
+//   console.log("new end", newEnd.toNumber());
+// }
 
-task('game:refreshRadius', 'refreshRadius')
-  .setAction(refreshRadius);
+// task('game:refreshRadius', 'refreshRadius')
+//   .setAction(refreshRadius);
 
-async function refreshRadius(args: {}, hre: HardhatRuntimeEnvironment) {
-  await hre.run('utils:assertChainId');
+// async function refreshRadius(args: {}, hre: HardhatRuntimeEnvironment) {
+//   await hre.run('utils:assertChainId');
 
-  const darkForest: DarkForestCore = await hre.run('utils:getCore');
+//   const darkForest: DarkForestCore = await hre.run('utils:getCore');
 
-  const setShrinkReceipt = await darkForest._updateWorldRadius();
-  await setShrinkReceipt.wait();
-  const radius = (await darkForest.worldRadius());
-  console.log("radius", radius.toNumber());
-}
-
-
+//   const setShrinkReceipt = await darkForest._updateWorldRadius();
+//   await setShrinkReceipt.wait();
+//   const radius = (await darkForest.worldRadius());
+//   console.log("radius", radius.toNumber());
+// }
 
 
-task('game:setTarget4RadiusConstant', 'change the target4RadiusConstant')
-  .addPositionalParam(
-    'target4RadiusConstant',
-    'the universe radius adjusts so that there are at least (approximately) this many lvl4+ planets',
-    undefined,
-    types.int
-  )
-  .setAction(gameSetTarget4RadiusConstant);
 
-async function gameSetTarget4RadiusConstant(
-  args: { target4RadiusConstant: number },
-  hre: HardhatRuntimeEnvironment
-) {
-  await hre.run('utils:assertChainId');
 
-  const darkForest: DarkForestCore = await hre.run('utils:getCore');
+// task('game:setTarget4RadiusConstant', 'change the target4RadiusConstant')
+//   .addPositionalParam(
+//     'target4RadiusConstant',
+//     'the universe radius adjusts so that there are at least (approximately) this many lvl4+ planets',
+//     undefined,
+//     types.int
+//   )
+//   .setAction(gameSetTarget4RadiusConstant);
 
-  const ct4rcReceipt = await darkForest.changeTarget4RadiusConstant(args.target4RadiusConstant);
-  await ct4rcReceipt.wait();
-}
+// async function gameSetTarget4RadiusConstant(
+//   args: { target4RadiusConstant: number },
+//   hre: HardhatRuntimeEnvironment
+// ) {
+//   await hre.run('utils:assertChainId');
 
-task('game:setTokenMintEnd', 'change the token mint end timestamp')
-  .addPositionalParam(
-    'tokenend',
-    'the timestamp (seconds since epoch) of the token mint endtime',
-    undefined,
-    types.int
-  )
-  .setAction(setTokenMintEnd);
+//   const darkForest: DarkForestCore = await hre.run('utils:getCore');
 
-async function setTokenMintEnd(args: { tokenend: number }, hre: HardhatRuntimeEnvironment) {
-  await hre.run('utils:assertChainId');
+//   const ct4rcReceipt = await darkForest.changeTarget4RadiusConstant(args.target4RadiusConstant);
+//   await ct4rcReceipt.wait();
+// }
 
-  const darkForest: DarkForestCore = await hre.run('utils:getCore');
+// task('game:setTokenMintEnd', 'change the token mint end timestamp')
+//   .addPositionalParam(
+//     'tokenend',
+//     'the timestamp (seconds since epoch) of the token mint endtime',
+//     undefined,
+//     types.int
+//   )
+//   .setAction(setTokenMintEnd);
 
-  const setRadiusReceipt = await darkForest.setTokenMintEndTime(args.tokenend);
-  await setRadiusReceipt.wait();
-}
+// async function setTokenMintEnd(args: { tokenend: number }, hre: HardhatRuntimeEnvironment) {
+//   await hre.run('utils:assertChainId');
 
-// 0d0847138e379ddf66742eb0d25b21f87b6295444dd74309e22973fab695140c
+//   const darkForest: DarkForestCore = await hre.run('utils:getCore');
 
-task('game:setPlanetOwner', 'sets the owner of the given planet to be the given address')
-  .addPositionalParam('planetId', 'non-0x-prefixed planet locationId', undefined, types.string)
-  .addPositionalParam('address', '0x-prefixed address of a player', undefined, types.string)
-  .setAction(setPlanetOwner);
+//   const setRadiusReceipt = await darkForest.setTokenMintEndTime(args.tokenend);
+//   await setRadiusReceipt.wait();
+// }
 
-async function setPlanetOwner(
-  { planetId, address }: { planetId: string; address: string },
-  hre: HardhatRuntimeEnvironment
-) {
-  await hre.run('utils:assertChainId');
-  const darkForest: DarkForestCore = await hre.run('utils:getCore');
+// // 0d0847138e379ddf66742eb0d25b21f87b6295444dd74309e22973fab695140c
 
-  // const setOwnerReciept = await darkForest.setOwner(BigNumber.from('0x' + planetId), address);
-  // await setOwnerReciept.wait();
-}
+// task('game:setPlanetOwner', 'sets the owner of the given planet to be the given address')
+//   .addPositionalParam('planetId', 'non-0x-prefixed planet locationId', undefined, types.string)
+//   .addPositionalParam('address', '0x-prefixed address of a player', undefined, types.string)
+//   .setAction(setPlanetOwner);
+
+// async function setPlanetOwner(
+//   { planetId, address }: { planetId: string; address: string },
+//   hre: HardhatRuntimeEnvironment
+// ) {
+//   await hre.run('utils:assertChainId');
+//   const darkForest: DarkForestCore = await hre.run('utils:getCore');
+
+//   // const setOwnerReciept = await darkForest.setOwner(BigNumber.from('0x' + planetId), address);
+//   // await setOwnerReciept.wait();
+// }
 
 task(
   'game:createPlanets',

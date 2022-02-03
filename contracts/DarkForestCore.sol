@@ -42,6 +42,7 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
     event PlanetHatBought(address player, uint256 loc, uint256 tohatLevel);
     event PlanetTransferred(address sender, uint256 loc, address receiver);
     event PlanetHijacked(address hijacker, uint256 loc);
+    event SentToStockpile(address player, uint256 loc, uint256 amount);
 
     event LocationRevealed(address revealer, uint256 loc, uint256 x, uint256 y);
 
@@ -451,14 +452,10 @@ contract DarkForestCore is Initializable, DarkForestStorageV1 {
         return (s.planetEventsCount);
     }
 
-    function sendToStockpile(uint256 _location, uint256 _amount)
-        public
-        notPaused
-        returns (uint256, uint256)
-    {
-        refreshPlanet(_location);
-        DarkForestPlanet.sendToStockpile(_location, _amount);
-        return (_location, _amount);
+    function sendToStockpile(uint256 locationId, uint256 amount) public notPaused {
+        refreshPlanet(locationId);
+        DarkForestPlanet.sendToStockpile(locationId, amount);
+        emit SentToStockpile(msg.sender, locationId, amount);
     }
 
     function upgradePlanet(uint256 _location, uint256 _branch)
